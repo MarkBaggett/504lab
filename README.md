@@ -8,7 +8,7 @@ There are two ways to get a copy of this lab.  First, Attend SANS SEC504 for thi
 
 
 ## Usage
-First, make sure your antivirus software and firewall are disabled. The tool will launch benign processes on hour host that mimic typical behavior of malware. Firewalls and antivirus products may prevent this tool from functioning properly. Once a malware behavior has launched you will be asked to find and investigate it.  This tool will present you with questions about the "malware" that you will need to answer to move on to the next step.  If you are stuck you submit an answer of "help" and it will give you a hint.  Alternatively you can look at the walk-through on the link provided below. To begin run this program and then open a second command prompt that is running as an Administrator. Use the second window to investigate the "malware" and the first window to submit your answers and get the questions.
+First, make sure your antivirus software and firewall are disabled. The tool will launch benign processes on your host that mimic the typical behavior of malware. Firewalls and antivirus products may prevent this tool from functioning properly. Once a malware behavior has launched you will be asked to find and investigate it.  This tool will present you with questions about the "malware" that you will need to answer to move on to the next step.  If you are stuck you submit an answer of "help" and it will give you a hint.  Alternatively you can look at the walk-through on the link provided below. To begin run this program and then open a second command prompt that is running as an Administrator. Use the second window to investigate the "malware" and the first window to submit your answers.
 
 
 ## Answers
@@ -21,7 +21,7 @@ Click [here](https://www.sans.org/course/hacker-techniques-exploits-incident-han
 
 This tool was developed by [Mark Baggett](https://twitter.com/markbaggett) course author of [SEC573 Automating Information Security with Python](https://www.sans.org/course/automating-information-security-with-python)
 
-Updates for this tool can be downloaded from https://github.com/markbaggett
+Updates for this tool can be downloaded from [HERE](https://markbaggett.github.io/504lab)
 
 This binary is distributed as part of SANS SEC504 Hacker Tools, Techniques, Exploits and Incident Response course.  You may download and use this tool without modification as you see fit.
 All Rights Reserved.
