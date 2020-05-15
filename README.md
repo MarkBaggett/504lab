@@ -4,7 +4,7 @@
 This lab is designed to show how a few simple commands documented on the SANS SEC504 Windows Incident Response Cheat Sheet can be used to identify unusual processes running on your host.  This lab will launch non-persistent, benign processes on your host that listen on network ports and establish communications using common malware techniques.   It will then ask you various questions about those processes.  The process id number, TCP ports and other information is chosen randomly so you can run this lab multiple times for practice.
 
 ## Download
-There are two ways to get a copy of this lab.  First, Attend SANS SEC504 for this lab and many other awesome labs.  Second, you can download it [here](504lab.exe).
+There are two ways to get a copy of this lab.  First, Attend SANS SEC504 for this lab and many other awesome labs.  Second, you can download it [here](https://github.com/MarkBaggett/504lab/releases/tag/1.0).
 
 
 ## Usage
