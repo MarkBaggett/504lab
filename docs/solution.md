@@ -32,7 +32,7 @@ What TCP port is the backdoor listening on? 50985
 What is the process id number of the backdoor?
 ```
 
-Now you need to know its process ID number.  That is the other number that was displayed in when we ran compare-objects.  The port number was displayed because we used the -o option when we called netstat.  In the example above the port number was 6392.  Enter that as the answer to the question.
+Now you need to know its process ID number.  That is the other number that was displayed in the compare-objects output.  The Process ID number was displayed because we used the -o option when we called netstat.  In the example above the process ID number was 6392.  Enter that as the answer to the question.
 
 ```
 What is the process id number of the backdoor? 6392
@@ -40,15 +40,15 @@ What is the process id number of the backdoor? 6392
 What is the Parent process id number of the backdoor?
 ```
 
-Now you need to find out what the Parent Process ID is.  The easiest way to see this is to use a graphical tool such as process explorer or process hacker.  But installing a tool on a system for incident response in sloppy.  Instead you can use wmic to query this information.  For example, `wmic process where (processid = 1234) get parentprocessid` would show you the parent processid for process 1234. You will want to run this one in a command prompt rather than your PowerShell prompt.  .  Change that command to reflect the correct process id for the backdoor and run in at your command prompt.  If you would like to get this same information from PowerShell you still need to query WMI, but that can be done through the Get-WmiObject applet.  
+Now you need to find out what the Parent Process ID is.  The easiest way to see this is to use a graphical tool such as process explorer or process hacker.  But installing a tool on a system for incident response in sloppy.  Instead you can use wmic to query the information.  For example, `wmic process where (processid = 1234) get parentprocessid` would show you the parent processid for process 1234. Run wmic command in a command prompt rather than your PowerShell prompt. Change `processid = 1234` to reflect the correct process id and run in at your command prompt.  If you would like to get this same information from PowerShell you still need to query WMI. That can be done using the Get-WmiObject applet.  
 
 ```
-C:\Windows\system32>wmic process where (processid = 6392) get parentprocessid
+C:\Windows\system32> wmic process where (processid = 6392) get parentprocessid
 ParentProcessId
 7220
 ```
 
-Now we know the parent process ID number you can answer the next question!
+Now you know the parent process ID number is 7220 and you can answer the next question!
 
 ```
 What is the Parent process id number of the backdoor? 7220
@@ -65,7 +65,7 @@ TheFlagisBlack197168254
 
 ```
 
-Once netcat connects the backdoor prints "TheFlagisBlack" followed by a random number.  Hmm perhaps this backdoor must have been created by a 1980s punk rock band. Regardless, now you can answer the next question.
+Once netcat connects, the backdoor prints "TheFlagisBlack" followed by a random number.  Hmm, perhaps this backdoor must have been created by a 1980s punk rock band. Regardless, now you can answer the next question.
 
 ```
 What is flag printed when you connect to the backdoor? TheFlagisBlack197168254
@@ -73,7 +73,7 @@ What is flag printed when you connect to the backdoor? TheFlagisBlack197168254
 What TCP port is the backdoor listening on now?
 ```
 
-The backdoor must have changed ports because we are asking for its new port number.  Well, if it is the same backdoor then the process id number must be the same.  We can use netstat with findstr to look for the process.
+The backdoor must have changed ports because we are asking for the new port number.  Well, if it is the same backdoor then the process id number must be the same.  We can use netstat with findstr to look for the process.
 
 ```
 C:\Windows\system32>netstat -nao | findstr 6392
@@ -81,7 +81,7 @@ C:\Windows\system32>netstat -nao | findstr 6392
   TCP    127.0.0.1:50985        127.0.0.1:51273        ESTABLISHED     6392
 ```
 
-You most likely see two entries here.  The bottom one is "ESTABLISHED" meaning someone is connected to it.  That is the netcat connection that we made to the backdoor to get the flag. If you don't close netcat it will keep that connection open. If you closed netcat you may only see one entry.  The first line says that it is "LISTENING".  This is the new port that backdoor is listening on.  We have the next answer to our questions!
+If you are following the commands as outlined in this walk-through then you most likely see two entries here.  The bottom one is "ESTABLISHED" meaning someone is connected to it.  That is the netcat connection that you made to the backdoor to get the flag. If you don't close netcat it will keep that connection open. If you closed netcat you may only see one entry.  The first line says that it is "LISTENING".  This is the new port that backdoor is listening on. You have the next answer to the questions!
 
 ```
 What TCP port is the backdoor listening on now? 51274
@@ -90,7 +90,7 @@ Now use wmic to kill the process.
 Press enter after you have killed the process.
 ```
 
-To kill the process with wmic I like to do it in two steps.  The first step just displays the process to confirm to me that I typed my syntax properly.  Then, once I know my syntax is complete, I press up arrow and change the word "list brief" to "delete".
+To kill the process with wmic I like to do it in two steps.  The first step just displays the process to confirm to me that I typed my syntax properly.  Then, once I know my syntax is correct, I press up arrow and change the word "list brief" to "delete". This two step process allows me to confirm I am killing the correct process.
 
 ```
 C:\Windows\system32>wmic process where (processid = 6392) list brief
@@ -117,7 +117,7 @@ This Powershell backdoor was easy to find because it listened on a TCP port.  A 
 What is the process id number of the backdoor?
 ```
 
-The next backdoor is more difficult to find.  Now it is not listening on a TCP port.  Had we known this was going to happen we could have recorded a list of running processes in a variable and compared it after the process was launched similar to what we did with netstat to find the TCP Port.  But it is too late for that.  The process is already running.  Fortunately the question does tell us that it is a PowerShell process. You could brute force this.  Just get a list of all PowerShell processes and submit their process id numbers until you find out which one is the backdoor it is looking for.  To get a list of all PowerShell processes you could type `wmic process where (name like "powershell%") list brief` or with PowerShell like this `Get-Process -name powershell`.  But brute forcing seems rather inelegant.  How could we determine which PowerShell Process launched? We could examine the command line of each process.  We will do that in a few questions.  Since it just started a few minutes ago we can ask PowerShell to show us the process start times. The command `Get-Process -name powershell | Select-Object -Property id,starttime`  will show you the start time of the PowerShell processes. That should make one of your processes stand out from the rest. One of the processes should have a very recent start time. Enter that Process ID number to get the next question.
+The next backdoor is more difficult to find.  Now it is not listening on a TCP port.  Had we known this was going to happen we could have recorded a list of running processes in a variable and compared it after the process was launched similar to what we did with netstat to find the TCP Port.  But it is too late for that.  The process is already running.  Fortunately the question does tell us that it is a PowerShell process. You could brute force the answer.  You could get a list of all PowerShell processes and submit their process id numbers until you find out which one is the backdoor. To get a list of all PowerShell processes you could type `wmic process where (name like "powershell%") list brief` or with PowerShell like this `Get-Process -name powershell`. But brute-forcing seems rather inelegant.  How could we determine which PowerShell Process was launched by the tool? We could examine the command line of each process.  We will do that in a few questions. We could look to see what was launched by the 504lab.exe program. Another option would be the process start time. Since it just started a few minutes ago we can ask PowerShell to show us the process start times. The command `Get-Process -name powershell | Select-Object -Property id,starttime`  will show you the start time of the PowerShell processes. That should make one of your processes stand out from the rest. One of the processes should have a very recent start time. Enter that Process ID number to get the next question.
 
 ```
 What is the process id number of the backdoor? 6512
@@ -134,13 +134,13 @@ CommandLine
 powershell.exe -nop -exec bypass -enc dwBoAGkAbABlACgAJAB0AHIAdQBlACkAewAkAGYAbABhAGcAIAA9ACAAIgBTAGEAcwBxAHUAYQBjAGgAZQAzADAAMwAyADEAMQA4ADIAMwAyACIAOwAgAFsAUwB5AHMAdABlAG0ALgBUAGgAcgBlAGEAZABpAG4AZwAuAFQAaAByAGUAYQBkAF0AOgA6AFMAbABlAGUAcAAoADEAMAAwADAAMAApAH0AOwA=
 ```
 
-Ok, we can see the command line, but no flag. PowerShell backdoors are quite often BASE64 encoded. Anytime you see the "-enc" option it will be followed by a base64 encoded payload. So let's decode that thing using PowerShell.  Typing "help" as your answer will give you a nice hint and some PowerShell syntax you can copy, paste and modify. Let's plug the BASE64 string from the command line above into that syntax to decode it.
+Ok, we can see the command line, but no flag. PowerShell backdoors are quite often BASE64 encoded. Anytime you see the "-enc" option it will be followed by a base64 encoded payload. With most PowerShell malware you must decode the script from the command line to see what the malware is doing to you host. So let's decode that thing using PowerShell.  Typing "help" as your answer will give you a nice hint and some PowerShell syntax you can copy, paste and modify. Let's plug the BASE64 string from the command line above into that syntax to decode it.
 
 ```
 PS C:\Users\mark_\Documents\504lab_internal> [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String("dwBoAGkAbABlACgAJAB0AHIAdQBlACkAewAkAGYAbABhAGcAIAA9ACAAIgBTAGEAcwBxAHUAYQBjAGgAZQAzADAAMwAyADEAMQA4ADIAMwAyACIAOwAgAFsAUwB5AHMAdABlAG0ALgBUAGgAcgBlAGEAZABpAG4AZwAuAFQAaAByAGUAYQBkAF0AOgA6AFMAbABlAGUAcAAoADEAMAAwADAAMAApAH0AOwA="))
 while($true){$flag = "Sasquache3032118232"; [System.Threading.Thread]::Sleep(10000)};
 ```
-How you have the final flag! It is Sasquache followed by a large number. Perhaps the backdoor author was a 9 foot hairy beast. No matter.  Now you can answer the next question!
+Now you have the final flag! It is "Sasquache" followed by a large number. Perhaps the backdoor author was a 9 foot reclusive hairy beast. No matter.  Now you can answer the next question!
 
 ```
 What is the flag contained in the script executed by the backdoor? Sasquache3032118232
@@ -150,7 +150,7 @@ Now use wmic to kill the process.
 Press enter after you have killed the process.
 ```
 
-Last you need to keep the backdoor process. Last time we used wmic.  Let's use PowerShell here.  Again, I like to do this in two steps.  The first one confirms I have the correct process.  The second step kills it.
+Last you need to kill the backdoor process. Last time we used wmic. Let's use PowerShell here. Again, I like to do this in two steps. The first one confirms I have the correct process. The second step kills it.  Alternatively, you could use the --confirm option and do it in one set.
 
 ```
 PS C:\Users\mark_\Documents\504lab_internal> Get-Process -pid 6512
